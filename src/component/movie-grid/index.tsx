@@ -28,25 +28,55 @@ const MovieGrid = (props: PropsType) => {
 
   // methods
 
-  const loadMore = async () => {
-    setPage(page + 1);
-  };
+  // const loadMore = async () => {
+  //   setPage(page + 1);
+  // };
 
   // hook
 
+  // useEffect(() => {
+  //   const getList = async (targetPage: number) => {
+  //     let response = null;
+
+  //     if (keyword === undefined) {
+  //       const params = {
+  //         page: targetPage,
+  //       };
+  //       switch (props.category) {
+  //         case category.movie:
+  //           response = await tmdbApi.getMoviesList(movie.popular, {
+  //             params,
+  //           });
+  //           break;
+  //         default:
+  //           response = await tmdbApi.getTvList(tv.popular, { params });
+  //       }
+  //     } else {
+  //       const params = { page: targetPage, query: keyword };
+  //       response = await tmdbApi.search(props.category, { params });
+  //     }
+  //     setItems([...items, ...response.results]);
+  //     setTotalPages(response.total_pages);
+  //   };
+  //   getList(1);
+  //   if ('/' + props.category !== pName) {
+  //     setPage(1);
+  //     setItems([]);
+  //     setPName(path.pathname);
+  //     window.scrollTo(0, 0);
+  //   } else {
+  //     getList(page);
+  //   }
+  // }, [props.category, keyword, page, path.pathname, pName]);
+
   useEffect(() => {
-    console.log(path);
-
-    const getList = async (targetPage: number) => {
+    const getList = async () => {
       let response = null;
-
       if (keyword === undefined) {
-        const params = {
-          page: targetPage,
-        };
+        const params = {};
         switch (props.category) {
           case category.movie:
-            response = await tmdbApi.getMoviesList(movie.popular, {
+            response = await tmdbApi.getMoviesList(movie.upcoming, {
               params,
             });
             break;
@@ -54,22 +84,42 @@ const MovieGrid = (props: PropsType) => {
             response = await tmdbApi.getTvList(tv.popular, { params });
         }
       } else {
-        const params = { page: targetPage, query: keyword };
+        const params = {
+          query: keyword,
+        };
         response = await tmdbApi.search(props.category, { params });
       }
-      setItems([...items, ...response.results]);
+      setItems(response.results);
       setTotalPages(response.total_pages);
     };
-    getList(page);
-    if ('/' + props.category !== pName) {
-      setPage(1);
-      setItems([]);
-      setPName(path.pathname);
-      window.scrollTo(0, 0);
+    getList();
+  }, [props.category, keyword]);
+
+  const loadMore = async () => {
+    let response = null;
+    if (keyword === undefined) {
+      const params = {
+        page: page + 1,
+      };
+      switch (props.category) {
+        case category.movie:
+          response = await tmdbApi.getMoviesList(movie.upcoming, {
+            params,
+          });
+          break;
+        default:
+          response = await tmdbApi.getTvList(tv.popular, { params });
+      }
     } else {
-      getList(page);
+      const params = {
+        page: page + 1,
+        query: keyword,
+      };
+      response = await tmdbApi.search(props.category, { params });
     }
-  }, [props.category, keyword, page, path.pathname, pName]);
+    setItems([...items, ...response.results]);
+    setPage(page + 1);
+  };
 
   // main
   return (

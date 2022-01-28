@@ -6,6 +6,8 @@ export interface LooseObject {
 
 export interface ItemsType {
   id: number;
+  name: string;
+  title: string;
 }
 
 export interface PropsType {

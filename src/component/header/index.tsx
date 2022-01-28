@@ -20,9 +20,11 @@ const headerNav: Array<navType> = [
 ];
 
 const Header: React.FC = (): JSX.Element => {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation() as any;
   const headerRef = useRef<HTMLDivElement>(null);
-  const active = headerNav.findIndex(e => e.path === pathname);
+  const active = headerNav.findIndex(
+    e => e.path === '/' + pathname.split('/')[1]
+  );
 
   // hook
   useEffect(() => {
@@ -53,7 +55,12 @@ const Header: React.FC = (): JSX.Element => {
         <ul className="header__nav">
           {headerNav.map((e, i) => (
             <li key={e.display} className={`${i === active ? 'active' : ''}`}>
-              <Link to={e.path}>{e.display}</Link>
+              <Link
+                to={e.path}
+                className={`${i === active ? 'disabled-link' : ''}`}
+              >
+                {e.display}
+              </Link>
             </li>
           ))}
         </ul>

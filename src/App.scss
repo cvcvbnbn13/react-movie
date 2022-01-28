@@ -36,6 +36,10 @@ a {
   color: unset;
 }
 
+.disabled-link {
+  pointer-events: none;
+}
+
 @media (hover: hover) {
   a:hover {
     color: $main-color;

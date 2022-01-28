@@ -20,7 +20,14 @@ const MovieCard = (props: PropsType) => {
 
   return (
     <Link to={link}>
-      <div className="movie-card" style={{ backgroundImage: `url(${bg})` }}>
+      <div
+        className="movie-card"
+        style={
+          item.poster_path
+            ? { backgroundImage: `url(${bg})` }
+            : { backgroundImage: 'linear-gradient(to top, #485563, #29323c)' }
+        }
+      >
         <Button>
           <i className="bx bx-play"></i>
         </Button>

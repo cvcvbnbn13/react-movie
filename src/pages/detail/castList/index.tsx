@@ -28,9 +28,18 @@ const CastList = (props: PropsType) => {
         <div key={item.name} className="casts__item">
           <div
             className="casts__item__img"
-            style={{
-              backgroundImage: `url(${apiConfig.w500image(item.profile_path)})`,
-            }}
+            style={
+              item.profile_path
+                ? {
+                    backgroundImage: `url(${apiConfig.w500image(
+                      item.profile_path
+                    )})`,
+                  }
+                : {
+                    backgroundImage:
+                      'linear-gradient(to top, #485563, #29323c)',
+                  }
+            }
           ></div>
           <p className="casts__item__name">{item.name}</p>
         </div>
